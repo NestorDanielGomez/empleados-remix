@@ -1,5 +1,12 @@
-const Empleado = ({ empleado }) => {
-  const { nombre, apellido, email, fechaAlta, comentario } = empleado;
+const Empleado = ({ empleado, setEmpleado, eliminarEmpleado }) => {
+  const { nombre, apellido, email, fechaAlta, comentario, id } = empleado;
+
+  const handleEliminar = () => {
+    const respuesta = confirm("Deseas Eliminar este paciente");
+    if (respuesta) {
+      eliminarEmpleado(id);
+    }
+  };
 
   return (
     <div className="mx-5 my-10 bg-white shadow-md px-5 py-10 rounded-xl">
@@ -26,12 +33,14 @@ const Empleado = ({ empleado }) => {
       <div className="flex justify-between mt-10">
         <button
           type="button"
-          className="py-2 px-10 bg-indigo-600 hover:bg-indigo-800 text-white font-bold uppercase rounded">
+          className="py-2 px-10 bg-indigo-600 hover:bg-indigo-800 text-white font-bold uppercase rounded"
+          onClick={() => setEmpleado(empleado)}>
           Editar
         </button>
         <button
           type="button"
-          className="py-2 px-10 bg-red-600 hover:bg-red-800 text-white font-bold uppercase rounded">
+          className="py-2 px-10 bg-red-600 hover:bg-red-800 text-white font-bold uppercase rounded"
+          onClick={handleEliminar}>
           Eliminar
         </button>
       </div>

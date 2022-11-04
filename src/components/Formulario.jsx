@@ -1,13 +1,24 @@
 import { useState, useEffect } from "react";
 import Error from "./Error";
 
-const Formulario = ({ empleados, setEmpleados }) => {
+const Formulario = ({ empleados, setEmpleados, empleado, setEmpleado }) => {
   const [nombre, setNombre] = useState(``);
   const [apellido, setApellido] = useState(``);
   const [email, setEmail] = useState(``);
   const [fechaAlta, setFechaAlta] = useState(``);
   const [comentario, setComentario] = useState(``);
   const [error, setError] = useState(false);
+
+  useEffect(() => {
+    if (Object.keys(empleado).length > 0) {
+      setNombre(empleado.nombre);
+      setNombre(empleado.nombre);
+      setApellido(empleado.apellido);
+      setEmail(empleado.email);
+      setFechaAlta(empleado.fechaAlta);
+      setComentario(empleado.comentario);
+    }
+  }, [empleado]);
 
   const generarId = () => {
     const random = Math.random().toString(36).substring(2);
@@ -24,15 +35,30 @@ const Formulario = ({ empleados, setEmpleados }) => {
       return;
     }
     setError(false);
+
     const nuevoEmpleado = {
       nombre,
       apellido,
       email,
       fechaAlta,
       comentario,
-      id: generarId(),
     };
-    setEmpleados([...empleados, nuevoEmpleado]);
+
+    if (empleado.id) {
+      //editando el registro
+
+      nuevoEmpleado.id = empleado.id;
+      const registrosActualizados = empleados.map((empleadoState) =>
+        empleadoState.id === empleado.id ? nuevoEmpleado : empleadoState
+      );
+      setEmpleados(registrosActualizados);
+      setEmpleado({});
+    } else {
+      //nuevo registro
+      nuevoEmpleado.id = generarId();
+      setEmpleados([...empleados, nuevoEmpleado]);
+    }
+
     //reinicio el formulario
     setNombre("");
     setApellido("");
@@ -132,7 +158,7 @@ const Formulario = ({ empleados, setEmpleados }) => {
         <input
           type="submit"
           className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-800 transition-all cursor-pointer"
-          value="Agregar Empleado"
+          value={empleado.id ? "Editar Empleado" : "Agregar empleado"}
         />
       </form>
     </div>
