@@ -4,16 +4,10 @@ import Header from "./components/Header";
 import ListadoEmpleados from "./components/ListadoEmpleados";
 
 function App() {
-  const [empleados, setEmpleados] = useState([]);
+  const [empleados, setEmpleados] = useState(
+    JSON.parse(localStorage.getItem("empleados")) ?? []
+  );
   const [empleado, setEmpleado] = useState({});
-
-  useEffect(() => {
-    const obtenerLocalStorage = () => {
-      const LS = JSON.parse(localStorage.getItem("empleados")) ?? [];
-    };
-
-    obtenerLocalStorage();
-  }, []);
 
   useEffect(() => {
     //cuando el componente este listo o hubo un cambio en el array de pacientes.
